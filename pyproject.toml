@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "celery-fastapi"
+version = "0.1.0"
+description = ""
+authors = ["Hope <s.hope.lee@samsung.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.115.0"
+uvicorn = "^0.31.0"
+celery = "^5.4.0"
+redis = "^5.1.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
