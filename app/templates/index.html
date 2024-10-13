@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Sound Quality Monitor</title>
+</head>
+<body>
+    <h1>Sound Quality Monitor</h1>
+
+    <h2>Upload Audio</h2>
+    <form action="/upload-audio/" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".m4a" required>
+        <button type="submit">Upload</button>
+    </form>
+
+    <h2>Go Processing Data</h2>
+    <button onclick="preprocessing()">Preprocessing</button>
+
+    <h2>Select Dataset for Analysis</h2>
+    <ul id="file-list">
+        {% for file in files %}
+            <li>
+                {{ file.name }} 
+                <button onclick="analyze('{{ file.name }}')">Analyze</button>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

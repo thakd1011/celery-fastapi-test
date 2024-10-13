@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    volumes:
+      - ./app:/app
+
+  worker_preprocess:
+    build: .
+    command: ["poetry", "run", "celery", "-A", "app.worker_preprocess", "worker", "--loglevel=info"]
+    depends_on:
+      - redis
+
+  worker_analyze:
+    build: .
+    command: ["poetry", "run", "celery", "-A", "app.worker_analyze", "worker", "--loglevel=info"]
+    depends_on:
+      - redis
+
+  flower:  # Run Flower on a separate service
+    build: .
+    command: ["poetry", "run", "celery", "-A", "app.main.celery_app", "flower", "--broker=redis://redis:6379", "--port=5555", "--basic_auth=username:password"]
+    ports:
+      - "5555:5555"
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:alpine
+
+  # Uncomment if using RabbitMQ
+  # rabbitmq:
+  #   image: rabbitmq:3-management
+  #   ports:
+  #     - "5672:5672"
+  #     - "15672:15672"
+
+volumes:
+  db_data:
